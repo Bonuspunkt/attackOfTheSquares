@@ -16,6 +16,17 @@ canvasEl.width = CANVAS_WIDTH;
 canvasEl.height = CANVAS_HEIGHT;
 document.body.appendChild(canvasEl);
 
+var anchorEl = document.createElement('a');
+anchorEl.style.display = 'block';
+anchorEl.href = '#';
+anchorEl.textContent = 'get screenshot';
+anchorEl.addEventListener('click', function(ev) {
+  this.href = canvasEl.toDataURL();
+  this.download = 'screenshot.png';
+});
+document.body.appendChild(anchorEl);
+
+
 var player = new Player(0);
 
 var game = new Game(canvasEl);

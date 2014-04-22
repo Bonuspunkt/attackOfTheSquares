@@ -20,7 +20,8 @@ module.exports = {
 
   enemy: {
     size: 16,
-    speed: 2
+    speed: 2,
+    spawnSleep: 500
   },
 
   spawner: {
