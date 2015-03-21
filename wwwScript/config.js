@@ -18,10 +18,30 @@ module.exports = {
     lifetime: 750
   },
 
-  enemy: {
+  follower: {
+    color: { r: 0, g: 180, b: 0 },
     size: 16,
     speed: 2,
     spawnSleep: 500
+  },
+
+  whirrer: {
+    color: { r: 0, g: 0, b: 180 },
+    size: 16,
+    speed: 2,
+    spawnSleep: 500,
+    radius: 30,
+    rotationSpeed: 1e-2
+  },
+
+  dasher: {
+    color: { r: 180, g: 0, b: 0 },
+    size: 16,
+    vMax: 12,
+    spawnSleep: 500,
+    chargeTime: 1000,
+    dashTime: 750,
+    slowdown: 0.9
   },
 
   spawner: {
@@ -30,5 +50,4 @@ module.exports = {
     bulletDistance: 10,
     playerDistance: 16
   }
-
 };

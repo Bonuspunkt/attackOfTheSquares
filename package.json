@@ -1,7 +1,7 @@
 {
-  "name": "tss",
+  "name": "aots",
   "version": "0.0.0",
-  "description": "Twin Stick Shooter",
+  "description": "Attack of the squares",
   "main": "index.js",
   "dependencies": {
     "send": "~0.2.0",

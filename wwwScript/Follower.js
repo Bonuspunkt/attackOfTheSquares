@@ -3,20 +3,21 @@ var util = require('./hna/util');
 
 var config = require('./config');
 
-var SIZE = config.enemy.size;
-var SPEED = config.enemy.speed;
-var SPAWN_SLEEP = config.enemy.spawnSleep;
+var SIZE = config.follower.size;
+var SPEED = config.follower.speed;
+var SPAWN_SLEEP = config.follower.spawnSleep;
+var COLOR = config.follower.color
 
-function Enemy(player, position) {
+function Follower(player, position) {
   EventEmitter.call(this);
 
   this.player = player;
   this.position = position;
 }
 
-util.inherits(Enemy, EventEmitter);
+util.inherits(Follower, EventEmitter);
 
-Enemy.prototype.update = function(_, timestamp) {
+Follower.prototype.update = function(_, timestamp) {
   if (!this.spawn) {
     this.spawn = timestamp;
   }
@@ -27,8 +28,8 @@ Enemy.prototype.update = function(_, timestamp) {
   }
 };
 
-Enemy.prototype.draw = function(context) {
-  context.fillStyle = 'rgba(0, 180, 0, ' + (this.active || 0) + ')';
+Follower.prototype.draw = function(context) {
+  context.fillStyle = util.getRGBA(COLOR, this.active || 0);
   context.fillRect(
     this.position.x - SIZE / 2,
     this.position.y - SIZE / 2,
@@ -36,4 +37,4 @@ Enemy.prototype.draw = function(context) {
 };
 
 
-module.exports = Enemy;
+module.exports = Follower;
