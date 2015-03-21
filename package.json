@@ -5,11 +5,12 @@
   "main": "index.js",
   "dependencies": {
     "send": "~0.2.0",
-    "webmake": "~0.3.27"
+    "webpack": "^1.7.3"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pack": "webpack --optimize-minimize",
+    "watch": "webpack --watch -d"
   },
   "repository": "",
   "author": "",
