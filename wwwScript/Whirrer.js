@@ -20,8 +20,8 @@ function Whirrer(player, position) {
     .substract(this.player.position)
     .normalize()
     .multiply(RADIUS);
-  this.rotation = 1;
-  this.position = this.basePosition.add(offset);
+  this.position = this.basePosition.clone().add(offset);
+  this.rotation = Math.atan2(offset.y, offset.x)
 }
 
 util.inherits(Whirrer, EventEmitter);
@@ -31,15 +31,16 @@ Whirrer.prototype.update = function(_, timestamp) {
     this.spawn = timestamp;
   }
   this.active = Math.min((timestamp - this.spawn) / SPAWN_SLEEP, 1);
+
   if (this.active === 1) {
     var toMove = this.player.position.clone()
-      .substract(this.position).normalize();
+      .substract(this.basePosition).normalize();
     this.basePosition.add(toMove.multiply(SPEED));
-    this.rotation = (timestamp - this.spawn) * ROTATION_SPEED;
-    var offset = new Vector2(Math.sin(this.rotation), Math.cos(this.rotation))
-      .multiply(RADIUS);
-    this.position = this.basePosition.clone().add(offset);
   }
+
+  this.rotation = (timestamp - this.spawn) * ROTATION_SPEED % (2*Math.PI);
+  var offset = new Vector2(Math.sin(this.rotation), Math.cos(this.rotation)).multiply(RADIUS);
+  this.position = this.basePosition.clone().add(offset);
 };
 
 Whirrer.prototype.draw = function(context) {
