@@ -53,8 +53,6 @@ Dasher.prototype.update = function(_, timestamp) {
       this.colorFactor = 1 - 0.8 * cycleTime / (CHARGE_TIME + DASH_TIME);
       break;
   }
-  //this.colorFactor = Math.max(Math.min(this.colorFactor, 0), 1)
-  console.log(this.colorFactor)
 
   if (this.active === 1) {
     this.position.add(this.velocity.multiply(SLOWDOWN));
@@ -68,8 +66,6 @@ Dasher.prototype.draw = function(context) {
     Math.round(COLOR.g * this.colorFactor),
     Math.round(COLOR.b * this.colorFactor),
     this.active || 0);
-
-  console.log(color)
 
   context.fillStyle = color;
   context.fillRect(
