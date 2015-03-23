@@ -1,21 +1,15 @@
 var Game = require('./Game');
 var Player = require('./Player');
-var Follower = require('./Follower');
-var Dasher = require('./Dasher');
-var Whirrer = require('./Whirrer');
 var Rocket = require('./Rocket');
-
-var Vector2 = require('./hna/Vector2');
+var Spawner = require('./Spawner');
 
 var config = require('./config');
 
-var CANVAS_WIDTH = config.canvas.width;
-var CANVAS_HEIGHT = config.canvas.height;
-
+var Follower = require('./Follower');
+var Dasher = require('./Dasher');
+var Whirrer = require('./Whirrer');
 var ENEMY_TYPES = [Follower, Dasher, Whirrer];
-function isEnemy(obj) {
-  return ENEMY_TYPES.some(function(Type){ return obj instanceof Type });
-}
+function isEnemy(obj) { return ENEMY_TYPES.some(function(Type){ return obj instanceof Type }); }
 
 // hack for more true random
 Math.random = (function(){
@@ -27,6 +21,10 @@ Math.random = (function(){
   };
 
 }());
+
+
+var CANVAS_WIDTH = config.canvas.width;
+var CANVAS_HEIGHT = config.canvas.height;
 
 var canvasEl = document.createElement('canvas');
 canvasEl.textContent = 'y u no browser with canvas support';
@@ -44,23 +42,24 @@ anchorEl.addEventListener('click', function(ev) {
 });
 document.body.appendChild(anchorEl);
 
+var game = new Game(canvasEl);
 
 var player = new Player(0);
-
-var game = new Game(canvasEl);
+player.on('shoot', function() { gameLogic.shoot(player); });
 game.addComponent(player);
+
+var spawner = new Spawner(player);
+spawner.on('spawn', function(obj) { game.addComponent(obj); });
+game.addComponent(spawner);
+
+
 game.start();
 
 
-player.on('shoot', function() { spawner.shoot(player); });
+var BULLET_DISTANCE = config.gameLogic.bulletDistance;
+var PLAYER_DISTANCE = config.gameLogic.playerDistance;
 
-
-var MIN_DISTANCE = config.spawner.minDistance;
-var INTERVAL = config.spawner.interval;
-var BULLET_DISTANCE = config.spawner.bulletDistance;
-var PLAYER_DISTANCE = config.spawner.playerDistance;
-
-var spawner = {
+var gameLogic = {
   on:function() {},
 
   score: 0,
@@ -75,29 +74,6 @@ var spawner = {
 
   lastSpawn: 0,
   update: function(_, timestamp) {
-    if (this.lastSpawn + INTERVAL < timestamp) {
-
-      var spawn = player.position.clone();
-      while (spawn.clone().substract(player.position).length() < MIN_DISTANCE)  {
-        spawn = new Vector2(CANVAS_WIDTH * Math.random(), CANVAS_HEIGHT * Math.random());
-      }
-
-      var seed = Math.random();
-      var NmyType;
-      if (seed < 0.1) {
-        NmyType = Whirrer;
-      } else if (seed > 0.8) {
-        NmyType = Dasher
-      } else {
-        NmyType = Follower;
-      }
-      var nmy = new NmyType(player, spawn);
-
-      game.addComponent(nmy)
-
-      this.lastSpawn = timestamp;
-    }
-
     var rockets = game.getComponents(function(cmp) {
       return cmp instanceof Rocket;
     });
@@ -162,4 +138,4 @@ var spawner = {
   }
 };
 
-game.addComponent(spawner);
+game.addComponent(gameLogic);

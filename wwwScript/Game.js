@@ -15,7 +15,7 @@ function Game(canvasEl) {
   };
 
   var lastTimestamp = 0;
-  
+
   this.run = function run(timestamp) {
     var timestampDelta = timestamp - lastTimestamp;
     lastTimestamp = timestamp;

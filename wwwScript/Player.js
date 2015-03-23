@@ -2,7 +2,6 @@ var EventEmitter = require('./hna/EventEmitter');
 var util = require('./hna/util');
 
 var Vector2 = require('./hna/Vector2');
-var Rocket = require('./Rocket');
 
 var config = require('./config');
 
@@ -10,7 +9,7 @@ var CANVAS_WIDTH = config.canvas.width;
 var CANVAS_HEIGHT = config.canvas.height;
 var IMAGE_SIZE = config.player.size;
 var SPEED = config.player.speed;
-var AIM_SPEED = config.player.aimSpeed
+var AIM_SPEED = config.player.aimSpeed;
 var SHOOT_INTERVAL = config.player.shootInterval;
 
 
@@ -19,7 +18,7 @@ img.src = './player.png';
 
 function getGamepads() {
   return (
-    navigator.getGamepads && navigator.getGamepads() || 
+    navigator.getGamepads && navigator.getGamepads() ||
     navigator.webkitGetGamepads && navigator.webkitGetGamepads()
   );
 }
@@ -37,7 +36,7 @@ util.inherits(Player, EventEmitter);
 
 Player.prototype.update = function(timestampDelta, timestamp) {
 
-  var gamepad = getGamepads()[0];
+  var gamepad = getGamepads()[this.gamepadIndex];
 
   if (!gamepad) { return; }
 
@@ -80,7 +79,7 @@ Player.prototype.canShot = function(timestamp) {
 Player.prototype.draw = function(context) {
   context.translate(this.position.x, this.position.y);
   context.rotate(this.angle);
-  context.drawImage(img, 
+  context.drawImage(img,
     -IMAGE_SIZE/2, -IMAGE_SIZE/2, IMAGE_SIZE, IMAGE_SIZE);
   context.rotate(-this.angle);
   context.translate(-this.position.x, -this.position.y);

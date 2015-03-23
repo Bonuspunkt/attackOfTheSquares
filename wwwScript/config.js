@@ -1,5 +1,5 @@
 module.exports = {
-  
+
   canvas: {
     width: 1280,
     height: 720
@@ -46,7 +46,9 @@ module.exports = {
 
   spawner: {
     minDistance: 100,
-    interval: 750,
+    interval: 750
+  },
+  gameLogic: {
     bulletDistance: 10,
     playerDistance: 16
   }
