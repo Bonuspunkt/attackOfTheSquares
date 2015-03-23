@@ -13,6 +13,20 @@ var CANVAS_WIDTH = config.canvas.width;
 var CANVAS_HEIGHT = config.canvas.height;
 
 var ENEMY_TYPES = [Follower, Dasher, Whirrer];
+function isEnemy(obj) {
+  return ENEMY_TYPES.some(function(Type){ return obj instanceof Type });
+}
+
+// hack for more true random
+Math.random = (function(){
+  var pool = new Uint16Array(1);
+
+  return function random() {
+      crypto.getRandomValues(pool);
+      return pool[0] / 65535;
+  };
+
+}());
 
 var canvasEl = document.createElement('canvas');
 canvasEl.textContent = 'y u no browser with canvas support';
@@ -38,7 +52,7 @@ game.addComponent(player);
 game.start();
 
 
-player.on('shoot', function() { spawner.shoot(); });
+player.on('shoot', function() { spawner.shoot(player); });
 
 
 var MIN_DISTANCE = config.spawner.minDistance;
@@ -54,7 +68,7 @@ var spawner = {
   enemyCount: 0,
   bullets: 0,
 
-  shoot: function() {
+  shoot: function(player) {
     this.bullets++;
     game.addComponent(new Rocket(player.position, player.direction));
   },
@@ -88,7 +102,7 @@ var spawner = {
       return cmp instanceof Rocket;
     });
     var toDie = game.getComponents(function(cmp) {
-      return ENEMY_TYPES.some(function(enemy) { return cmp instanceof enemy}) && 
+      return isEnemy(cmp) &&
       rockets.some(function(r) {
         var distance = r.position.clone().substract(cmp.position).length();
         return r.position.clone().substract(cmp.position).length() < BULLET_DISTANCE;
@@ -108,7 +122,7 @@ var spawner = {
 
 
     var hits = game.getComponents(function(cmp) {
-      return ENEMY_TYPES.some(function(enemy) { return cmp instanceof enemy; })
+      return isEnemy(cmp)
         && cmp.position.clone().substract(player.position).length() < PLAYER_DISTANCE;
     });
 
@@ -116,8 +130,8 @@ var spawner = {
       game.stop();
     }
 
-    this.enemyCount = game.getComponents(function(c){ 
-      return ENEMY_TYPES.some(function(enemy) { return c instanceof enemy; });
+    this.enemyCount = game.getComponents(function(c){
+      return isEnemy(c);
     }).length;
 
   },
