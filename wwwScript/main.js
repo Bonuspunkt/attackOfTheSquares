@@ -36,7 +36,7 @@ var anchorEl = document.createElement('a');
 anchorEl.style.display = 'block';
 anchorEl.href = '#';
 anchorEl.textContent = 'get screenshot';
-anchorEl.addEventListener('click', function(ev) {
+anchorEl.addEventListener('click', function() {
   this.href = canvasEl.toDataURL();
   this.download = 'screenshot.png';
 });
@@ -60,7 +60,7 @@ var BULLET_DISTANCE = config.gameLogic.bulletDistance;
 var PLAYER_DISTANCE = config.gameLogic.playerDistance;
 
 var gameLogic = {
-  on:function() {},
+  on: function() {},
 
   score: 0,
   kills: 0,
@@ -81,7 +81,7 @@ var gameLogic = {
       return isEnemy(cmp) &&
       rockets.some(function(r) {
         var distance = r.position.clone().substract(cmp.position).length();
-        return r.position.clone().substract(cmp.position).length() < BULLET_DISTANCE;
+        return distance < BULLET_DISTANCE;
       });
     });
     if (toDie.length) {
