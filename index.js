@@ -7,8 +7,7 @@ var wwwRoot = path.resolve(__dirname, 'wwwRoot');
 
 http.createServer(function (req, res) {
 
-    send(req, url.parse(req.url).pathname)
-        .root(wwwRoot)
+    send(req, url.parse(req.url).pathname, { root: wwwRoot })
         .pipe(res);
 
 }).listen(8080);
