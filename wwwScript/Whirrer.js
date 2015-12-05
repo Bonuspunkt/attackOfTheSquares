@@ -9,46 +9,46 @@ var SPEED = config.whirrer.speed;
 var SPAWN_SLEEP = config.whirrer.spawnSleep;
 var COLOR = config.whirrer.color;
 var RADIUS = config.whirrer.radius;
-var ROTATION_SPEED = config.whirrer.rotationSpeed
+var ROTATION_SPEED = config.whirrer.rotationSpeed;
 
 function Whirrer(player, position) {
-  EventEmitter.call(this);
+    EventEmitter.call(this);
 
-  this.player = player;
-  this.basePosition = position;
-  var offset = this.basePosition.clone()
-    .substract(this.player.position)
-    .normalize()
-    .multiply(RADIUS);
-  this.position = this.basePosition.clone().add(offset);
-  this.rotation = Math.atan2(offset.y, offset.x)
+    this.player = player;
+    this.basePosition = position;
+    var offset = this.basePosition.clone()
+        .substract(this.player.position)
+        .normalize()
+        .multiply(RADIUS);
+    this.position = this.basePosition.clone().add(offset);
+    this.rotation = Math.atan2(offset.y, offset.x);
 }
 
 util.inherits(Whirrer, EventEmitter);
 
 Whirrer.prototype.update = function(_, timestamp) {
-  if (!this.spawn) {
-    this.spawn = timestamp;
-  }
-  this.active = Math.min((timestamp - this.spawn) / SPAWN_SLEEP, 1);
+    if (!this.spawn) {
+        this.spawn = timestamp;
+    }
+    this.active = Math.min((timestamp - this.spawn) / SPAWN_SLEEP, 1);
 
-  if (this.active === 1) {
-    var toMove = this.player.position.clone()
-      .substract(this.basePosition).normalize();
-    this.basePosition.add(toMove.multiply(SPEED));
-  }
+    if (this.active === 1) {
+        var toMove = this.player.position.clone()
+            .substract(this.basePosition).normalize();
+        this.basePosition.add(toMove.multiply(SPEED));
+    }
 
-  this.rotation = (timestamp - this.spawn) * ROTATION_SPEED % (2*Math.PI);
-  var offset = new Vector2(Math.sin(this.rotation), Math.cos(this.rotation)).multiply(RADIUS);
-  this.position = this.basePosition.clone().add(offset);
+    this.rotation = (timestamp - this.spawn) * ROTATION_SPEED % (2 * Math.PI);
+    var offset = new Vector2(Math.sin(this.rotation), Math.cos(this.rotation)).multiply(RADIUS);
+    this.position = this.basePosition.clone().add(offset);
 };
 
 Whirrer.prototype.draw = function(context) {
-  context.fillStyle = util.getRGBA(COLOR, this.active || 0);
-  context.fillRect(
-    this.position.x - SIZE / 2,
-    this.position.y - SIZE / 2,
-    SIZE, SIZE);
+    context.fillStyle = util.getRGBA(COLOR, this.active || 0);
+    context.fillRect(
+        this.position.x - SIZE / 2,
+        this.position.y - SIZE / 2,
+        SIZE, SIZE);
 };
 
 

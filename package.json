@@ -4,15 +4,27 @@
   "description": "Attack of the squares",
   "main": "index.js",
   "dependencies": {
-    "send": "~0.2.0",
-    "webpack": "^1.7.3"
+    "react": "^0.14.3",
+    "send": "~0.13.0",
+    "webpack": "^1.12.9"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^1.10.3"
+  },
   "scripts": {
+    "lint": "eslint .",
     "pack": "webpack --optimize-minimize",
-    "watch": "webpack --watch -d"
+    "watch": "webpack --watch -d",
+    "serve": "node index.js"
   },
-  "repository": "",
-  "author": "",
-  "license": "BSD"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bonuspunkt/attackOfTheSquares.git"
+  },
+  "author": "Bonuspunkt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bonuspunkt/attackOfTheSquares/issues"
+  },
+  "homepage": "https://github.com/Bonuspunkt/attackOfTheSquares#readme"
 }
